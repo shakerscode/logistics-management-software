@@ -3,7 +3,7 @@ import hero from '../../assets/images/hero-img.png'
 
 const HeroBanner = () => {
     return (
-        <div className='flex justify-center gap-10 items-center h-[500px]'>
+        <div className='flex justify-center gap-10 items-center h-[450px]'>
             <div>
                 <h2 className='text-5xl font-bold py-2'>Stock Goods  Smartly</h2>
                 <p className='text-lg'>Manage all your goods operations from one platform to <br /> enhance efficiency and deliver exceptional customer experience at scale.</p>
