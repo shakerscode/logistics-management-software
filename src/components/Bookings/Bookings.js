@@ -9,7 +9,7 @@ import { format } from 'date-fns';
 
 const Bookings = () => {
     const [slotsData, stSlotsData] = useState([]) 
-    const [date, setDate] = useState(new Date()); 
+    const [date, setDate] = useState(new Date());   
  
     useEffect(() => {
         fetch('http://localhost:5000/slots')
@@ -21,11 +21,13 @@ const Bookings = () => {
         e.preventDefault()
         const name = e.target.name.value;
         const slot = e.target.slot.value;
+        const orderDate = format(date, 'PP')
+        console.log(orderDate);
 
         const data =
         {
             name: name,
-            slot: slot
+            slot: slot, 
         }
 
         fetch('http://localhost:5000/booking', {
@@ -45,18 +47,18 @@ const Bookings = () => {
             })
     }
     return (
-        <div className='h-full'>
+        <div className='h-[]'>
             <h1 className='text-center text-4xl font-bold py-4'>Book Your Slot</h1>
-            <div className='flex flex-col justify-center items-center'>
+            <div className='flex flex-col justify-center items-center'>  
+            <div className='flex flex-col justify-center items-center py-5 w-[40%] my-5 text-center bg-white px-3 rounded-lg shadow'> 
                 <h2 className='text-center text-xl font-bold py-4'>Select A Date For Booking</h2>
                 <DayPicker
-                    mode="single"
+                    mode="single" 
+                    disableNavigation 
                     selected={date}
                     onSelect={setDate} 
-                /> 
-            </div>
-            <div className='flex flex-col justify-center items-center  py-5'>
-                <div className='w-[40%] text-center bg-white px-3 py-3 rounded-lg'>
+                />  
+                <div className=' w-full px-3 text-center bg-white rounded-lg'>
                     <h2 className='text-lg font-semibold'>Available slots for { date && format(date, 'PP')}</h2>
                     <form
                         onSubmit={submitBooing}
@@ -65,7 +67,7 @@ const Bookings = () => {
                             type="text"
                             name='name'
                             required
-                            placeholder='Your Company Name'
+                            placeholder='Enter your company name'
                             className='outline-none shadow-md px-3 py-3' />
                         <select name='slot' className='outline-none shadow-md px-3 py-3'>
                             <option disabled className='font-semibold rounded-lg cursor-pointer'>Pick Your Slot</option>
@@ -81,7 +83,8 @@ const Bookings = () => {
                             className='bg-blue-500 px-4 py-3 rounded-lg w-full text-white mt-5 font-semibold cursor-pointer'
                             value="Book Slot" />
                     </form>
-                </div>
+                </div> 
+            </div>
             </div>
         </div>
     );
