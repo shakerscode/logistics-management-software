@@ -1,11 +1,12 @@
 import React from 'react';
-import { HeroBanner, Bookings } from '../export'; 
+import { HeroBanner, Bookings, AllBookings } from '../export'; 
 
 const MainContainer = () => {
     return (
-        <main className='px-12 bg-gray-50'> 
+        <main className='md:px-12 px-5 bg-gray-50'> 
                 <HeroBanner></HeroBanner> 
                 <Bookings></Bookings>
+                <AllBookings></AllBookings>
         </main>
     );
 };

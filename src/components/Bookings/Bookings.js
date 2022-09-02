@@ -7,7 +7,6 @@ import 'react-day-picker/dist/style.css';
 import { format } from 'date-fns';
 import { useQuery } from '@tanstack/react-query';
 import Loader from '../Loader/Loader';
-import {BsFillArrowRightCircleFill} from 'react-icons/bs'
 
 
 const Bookings = () => {
@@ -27,7 +26,7 @@ const Bookings = () => {
         return toast.error(error?.message)
     }
 
-    const submitBooing = (e) => {
+    const submitBooking = (e) => {
         e.preventDefault()
         const name = e.target.name.value;
         const slot = e.target.slot.value;
@@ -55,12 +54,14 @@ const Bookings = () => {
                      e.target.slot.value = '';
                 }
             })
+            refetch()
+
     }
     return (
-        <div className='h-[]'>
+        <div id='booking'>
             <h1 className='text-center text-4xl font-bold py-4'>Book Your Slot</h1>
             <div className='flex flex-col justify-center items-center'>
-                <div className='flex flex-col justify-center items-center py-5 w-[40%] my-5 text-center bg-white px-3 rounded-lg shadow'>
+                <div className='flex flex-col justify-center items-center py-5 md:w-[40%] my-5 text-center bg-white px-3 rounded-lg shadow'>
                     <h2 className='text-center text-blue-500 text-xl font-bold py-4'>Select A Date For Booking</h2>
                     <DayPicker
                         mode="single"
@@ -71,7 +72,7 @@ const Bookings = () => {
                     <div className=' w-full px-3 text-center bg-white rounded-lg'>
                         <h2 className='text-lg font-semibold'>Available slots for {date && format(date, 'PP')}</h2>
                         <form
-                            onSubmit={submitBooing}
+                            onSubmit={submitBooking}
                             className='flex flex-col gap-3 py-2'>
                             <input
                                 type="text"
@@ -90,7 +91,7 @@ const Bookings = () => {
                             <p className='text-md'>Available slots for booking:  {slotsData?.length}</p>
                             <input
                                 type="submit"
-                                className='bg-blue-500 px-4 py-3 rounded-lg w-full text-white mt-5 font-semibold cursor-pointer'
+                                className='bg-blue-500 md:px-4 md:py-3 py-3 rounded-lg w-full text-white mt-5 font-semibold cursor-pointer'
                                 value="Book Slot" />
                         </form>
                     </div>
