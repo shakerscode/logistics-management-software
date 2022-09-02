@@ -5,29 +5,47 @@ import toast from "react-hot-toast";
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { format } from 'date-fns';
+import { useQuery } from '@tanstack/react-query';
+import Loader from '../Loader/Loader';
 
 
 const Bookings = () => {
-    const [slotsData, stSlotsData] = useState([]) 
-    const [date, setDate] = useState(new Date());   
- 
-    useEffect(() => {
-        fetch('http://localhost:5000/slots')
-            .then(res => res.json())
-            .then(data => stSlotsData(data))
-    }, [])
+    // const [slotsData, stSlotsData] = useState([]) 
+    const [date, setDate] = useState(new Date());  
+
+    const formattedDate =  date && format(date, 'PP');
+    const url =  `http://localhost:5000/slots?date=${formattedDate}`;
+
+
+    // useEffect(() => {
+    //     fetch(url)
+    //         .then(res => res.json())
+    //         .then(data => stSlotsData(data))
+    // }, [formattedDate])
+
+    const { isLoading, error, data:slotsData , refetch} = useQuery(['slots', formattedDate], ()=>
+    fetch(url).then(res => res.json()
+    )
+  )
+// console.log(data, error);
+
+if(isLoading){
+    return <Loader></Loader>
+}
+if(error){
+    return toast.error(error?.message)
+}
 
     const submitBooing = (e) => {
         e.preventDefault()
         const name = e.target.name.value;
-        const slot = e.target.slot.value;
-        const orderDate = format(date, 'PP')
-        console.log(orderDate);
+        const slot = e.target.slot.value; 
 
         const data =
         {
             name: name,
             slot: slot, 
+            date: formattedDate
         }
 
         fetch('http://localhost:5000/booking', {
@@ -41,8 +59,7 @@ const Bookings = () => {
             .then(data => {
                 if (data.success) {
                     toast.success('Booking Successful')
-                } else {
-                    toast.error(`This slot is already booked by ${data?.booking?.name}`)
+                    refetch()
                 }
             })
     }
@@ -72,8 +89,8 @@ const Bookings = () => {
                         <select name='slot' className='outline-none shadow-md px-3 py-3'>
                             <option disabled className='font-semibold rounded-lg cursor-pointer'>Pick Your Slot</option>
                             {
-                                slotsData.map(slot =>
-                                    <option key={slot._id} value={`${slot.start} - ${slot.end}`}>{`${slot.start} - ${slot.end}`}</option>
+                                slotsData?.map(slot =>
+                                    <option key={slot._id} value={slot?.slot}>{slot?.slot}</option>
                                 )
                             }
                         </select>
