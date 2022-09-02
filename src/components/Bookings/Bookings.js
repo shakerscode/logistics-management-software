@@ -7,44 +7,35 @@ import 'react-day-picker/dist/style.css';
 import { format } from 'date-fns';
 import { useQuery } from '@tanstack/react-query';
 import Loader from '../Loader/Loader';
+import {BsFillArrowRightCircleFill} from 'react-icons/bs'
 
 
 const Bookings = () => {
-    // const [slotsData, stSlotsData] = useState([]) 
-    const [date, setDate] = useState(new Date());  
+    const [date, setDate] = useState(new Date());
 
-    const formattedDate =  date && format(date, 'PP');
-    const url =  `http://localhost:5000/slots?date=${formattedDate}`;
-
-
-    // useEffect(() => {
-    //     fetch(url)
-    //         .then(res => res.json())
-    //         .then(data => stSlotsData(data))
-    // }, [formattedDate])
-
-    const { isLoading, error, data:slotsData , refetch} = useQuery(['slots', formattedDate], ()=>
-    fetch(url).then(res => res.json()
+    const formattedDate = date && format(date, 'PP');
+    const url = `http://localhost:5000/slots?date=${formattedDate}`;
+    const { isLoading, error, data: slotsData, refetch } = useQuery(['slots', formattedDate], () =>
+        fetch(url).then(res => res.json()
+        )
     )
-  )
-// console.log(data, error);
 
-if(isLoading){
-    return <Loader></Loader>
-}
-if(error){
-    return toast.error(error?.message)
-}
+    if (isLoading) {
+        return <Loader></Loader>
+    }
+    if (error) {
+        return toast.error(error?.message)
+    }
 
     const submitBooing = (e) => {
         e.preventDefault()
         const name = e.target.name.value;
-        const slot = e.target.slot.value; 
+        const slot = e.target.slot.value;
 
         const data =
         {
             name: name,
-            slot: slot, 
+            slot: slot,
             date: formattedDate
         }
 
@@ -60,48 +51,50 @@ if(error){
                 if (data.success) {
                     toast.success('Booking Successful')
                     refetch()
+                     e.target.name.value = '';
+                     e.target.slot.value = '';
                 }
             })
     }
     return (
         <div className='h-[]'>
             <h1 className='text-center text-4xl font-bold py-4'>Book Your Slot</h1>
-            <div className='flex flex-col justify-center items-center'>  
-            <div className='flex flex-col justify-center items-center py-5 w-[40%] my-5 text-center bg-white px-3 rounded-lg shadow'> 
-                <h2 className='text-center text-xl font-bold py-4'>Select A Date For Booking</h2>
-                <DayPicker
-                    mode="single" 
-                    disableNavigation 
-                    selected={date}
-                    onSelect={setDate} 
-                />  
-                <div className=' w-full px-3 text-center bg-white rounded-lg'>
-                    <h2 className='text-lg font-semibold'>Available slots for { date && format(date, 'PP')}</h2>
-                    <form
-                        onSubmit={submitBooing}
-                        className='flex flex-col gap-3 py-2'>
-                        <input
-                            type="text"
-                            name='name'
-                            required
-                            placeholder='Enter your company name'
-                            className='outline-none shadow-md px-3 py-3' />
-                        <select name='slot' className='outline-none shadow-md px-3 py-3'>
-                            <option disabled className='font-semibold rounded-lg cursor-pointer'>Pick Your Slot</option>
-                            {
-                                slotsData?.map(slot =>
-                                    <option key={slot._id} value={slot?.slot}>{slot?.slot}</option>
-                                )
-                            }
-                        </select>
-                        <p className='text-md'>Available slots for booking:  {slotsData?.length}</p>
-                        <input
-                            type="submit"
-                            className='bg-blue-500 px-4 py-3 rounded-lg w-full text-white mt-5 font-semibold cursor-pointer'
-                            value="Book Slot" />
-                    </form>
-                </div> 
-            </div>
+            <div className='flex flex-col justify-center items-center'>
+                <div className='flex flex-col justify-center items-center py-5 w-[40%] my-5 text-center bg-white px-3 rounded-lg shadow'>
+                    <h2 className='text-center text-blue-500 text-xl font-bold py-4'>Select A Date For Booking</h2>
+                    <DayPicker
+                        mode="single"
+                        disableNavigation
+                        selected={date}
+                        onSelect={setDate}
+                    />
+                    <div className=' w-full px-3 text-center bg-white rounded-lg'>
+                        <h2 className='text-lg font-semibold'>Available slots for {date && format(date, 'PP')}</h2>
+                        <form
+                            onSubmit={submitBooing}
+                            className='flex flex-col gap-3 py-2'>
+                            <input
+                                type="text"
+                                name='name'
+                                required
+                                placeholder='Enter your company name'
+                                className='outline-none shadow-md px-3 py-3' />
+                            <select name='slot' className='outline-none shadow-md px-3 py-3'>
+                                <option disabled className='font-semibold rounded-lg cursor-pointer'>Pick Your Slot</option>
+                                {
+                                    slotsData?.map(slot =>
+                                        <option key={slot._id} value={slot?.slot}>{slot?.slot}</option>
+                                    )
+                                }
+                            </select>
+                            <p className='text-md'>Available slots for booking:  {slotsData?.length}</p>
+                            <input
+                                type="submit"
+                                className='bg-blue-500 px-4 py-3 rounded-lg w-full text-white mt-5 font-semibold cursor-pointer'
+                                value="Book Slot" />
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     );

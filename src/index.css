@@ -22,13 +22,24 @@ code {
 
 
 /* Loader */
+/* This loader is collected from google. I don't made it. I just copied the code from generator and customized it. I realized that not to wast time for this spinner coding. */
+
+.loading{
+  height: 40vh;
+  width: 40vw;  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
 .loader {
-  width: 48px;
-  height: 48px;
+  width: 88px;
+  height: 88px;
   border-radius: 50%;
   position: relative;
   transform:rotate(45deg);
-  background: #fff;
+  background-color: rgb(0, 191, 255);
+  
 }
 .loader::before {
   content: "";
@@ -36,7 +47,7 @@ code {
   position: absolute;
   inset: 0px;
   border-radius: 50%;
-  border:24px solid #FF3D00;
+  border:24px solid #76cbff;
   animation: prixClipFix 2s infinite linear;
 }
 
