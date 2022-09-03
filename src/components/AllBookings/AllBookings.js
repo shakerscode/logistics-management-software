@@ -5,7 +5,7 @@ import Loader from '../Loader/Loader';
 import {FiRefreshCcw} from 'react-icons/fi'
 
 const AllBookings = () => {
-    const url = 'http://localhost:5000/bookings';
+    const url = 'https://logistic-server.vercel.app/bookings';
     const { isLoading, error, data, refetch } = useQuery(['bookings', url], () =>
         fetch(url).then(res => res.json()
         )

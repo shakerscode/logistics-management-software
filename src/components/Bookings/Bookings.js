@@ -13,7 +13,7 @@ const Bookings = () => {
     const [date, setDate] = useState(new Date());
 
     const formattedDate = date && format(date, 'PP');
-    const url = `http://localhost:5000/slots?date=${formattedDate}`;
+    const url = `https://logistic-server.vercel.app/slots?date=${formattedDate}`;
     const { isLoading, error, data: slotsData, refetch } = useQuery(['slots', formattedDate], () =>
         fetch(url).then(res => res.json()
         )
@@ -38,7 +38,7 @@ const Bookings = () => {
             date: formattedDate
         }
 
-        fetch('http://localhost:5000/booking', {
+        fetch('https://logistic-server.vercel.app/booking', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
